@@ -5,10 +5,10 @@ add - Add the number to an internal data structure.
 find - Find if there exists any pair of numbers which sum is equal to the value.
 """
 
-# add: O(n) runtime
-# find: O(n) runtime, O(1) space
+# add: O(1) runtime
+# find: O(n) runtime, O(n) space
 
-from itertools import izip
+from collections import Counter
 
 class TwoSum(object):
 
@@ -16,7 +16,7 @@ class TwoSum(object):
         """
         initialize your data structure here
         """
-        self.numbers = []
+        self.cnt = Counter()
         
 
     def add(self, number):
@@ -24,18 +24,7 @@ class TwoSum(object):
         Add the number to an internal data structure.
         :rtype: nothing
         """
-        if self.numbers:
-            if number <= self.numbers[0]:
-                self.numbers.insert(0, number)
-            elif number > self.numbers[-1]:
-                self.numbers.append(number)
-            else:
-                for curr, next in izip(self.numbers, self.numbers[1:]):
-                    if curr <= number and number < next:
-                        self.numbers.insert(curr, number)
-                        break
-        else:
-            self.numbers.append(number)
+        self.cnt[number] += 1
         
 
     def find(self, value):
@@ -44,21 +33,25 @@ class TwoSum(object):
         :type value: int
         :rtype: bool
         """
-        head = 0
-        tail = len(self.numbers) - 1
-        while head < tail:
-            if self.numbers[head] + self.numbers[tail] == value:
-                return True
-            elif self.numbers[head] + self.numbers[tail] < value:
-                head += 1
+        for k, v in self.cnt.items():
+            dif = value - k
+            if dif == k:
+                if self.cnt.get(k) >= 2:
+                    return True
             else:
-                tail -= 1
-        return False
+                if self.cnt.get(dif):
+                    return True
+        else:
+            return False
 
 # Your TwoSum object will be instantiated and called as such:
 twoSum = TwoSum()
-twoSum.add(0)
-twoSum.add(0)
-print twoSum.numbers
-print twoSum.find(0)
+twoSum.add(1)
+twoSum.add(3)
+twoSum.add(5)
+twoSum.add(1)
 
+
+print twoSum.find(4)
+print twoSum.find(7)
+print twoSum.find(2)

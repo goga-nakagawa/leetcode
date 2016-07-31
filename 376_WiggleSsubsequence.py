@@ -15,29 +15,37 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        if len(nums) < 2:
-            return len(nums)
-        ret = 2
-        cnt = 2
-        flg = nums[0] < nums[1]
-
-        for curr, next in izip(nums[1:], nums[2:]):
-            dif = next - curr if flg else curr - next
+        wiggle_l = 0
+        max_l = 0
+        flg = None
+        start = 0
+        for curr, next in izip(nums, nums[1:]):
+            dif = curr - next
+            start += 1
             if dif == 0:
                 continue
-            elif dif < 0 ^ flg:
-                cnt += 1
-                flg = not flg
-                ret = max([cnt, ret])
             else:
-                cnt = 2
-                flg = curr < next
-        return ret
+                flg = dif > 0
+                wiggle_l = 2
+                max_l = 2
+                break
+
+        for curr, next in izip(nums[start:], nums[start+1:]):
+            dif = curr - next
+            if dif == 0:
+                continue
+            elif (dif > 0) ^ flg:
+                wiggle_l += 1
+                max_l = max([wiggle_l, max_l])
+                flg = not flg
+            else:
+                wiggle_l = 2
+
+        return max_l
 
 
 s = Solution()
 print s.wiggleMaxLength([1,7,4,9,2,5])
-print s.wiggleMaxLength([1,4,7,2,5])
 print s.wiggleMaxLength([1,7,4,5,5])
 print s.wiggleMaxLength([1,17,5,10,13,15,10,5,16,8])
 print s.wiggleMaxLength([1,2,3,4,5,6,7,8,9])

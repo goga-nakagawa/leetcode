@@ -11,17 +11,15 @@ Note: It is intended for the problem statement to be ambiguous. You should gathe
 """
 
 import re
-
 class Solution(object):
-    def __init__(self):
-        self.number = re.compile(r"(\+?|\-?)(\d*\.?\d+$|\d+\.?\d*$|\d\.?\d*e\d+)")
 
     def isNumber(self, s):
         """
         :type s: str
         :rtype: bool
         """
-        return True if self.number.match(s.strip()) else False
+        compiled = re.compile(r"^\s*[\+-]?((\d+(\.\d*)?)|\.\d+)([eE][\+-]?\d+)?\s*$")
+        return bool(compiled.match(s))
 
 
 print Solution().isNumber("0")
@@ -33,3 +31,5 @@ print Solution().isNumber(".1")
 print Solution().isNumber(".")
 print Solution().isNumber("3.")
 print Solution().isNumber("-1.")
+print Solution().isNumber("4e1.e")
+

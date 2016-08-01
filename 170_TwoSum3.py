@@ -35,23 +35,11 @@ class TwoSum(object):
         """
         for k, v in self.cnt.items():
             dif = value - k
-            if dif == k:
-                if self.cnt.get(k) >= 2:
-                    return True
-            else:
-                if self.cnt.get(dif):
-                    return True
-        else:
-            return False
+            if dif in self.cnt.keys() and (dif != k or self.cnt.get(dif) > 1):
+                return True
+        return False
 
 # Your TwoSum object will be instantiated and called as such:
 twoSum = TwoSum()
-twoSum.add(1)
-twoSum.add(3)
-twoSum.add(5)
-twoSum.add(1)
-
-
-print twoSum.find(4)
-print twoSum.find(7)
-print twoSum.find(2)
+twoSum.add(0)
+print twoSum.find(0)

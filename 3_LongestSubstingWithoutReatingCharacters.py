@@ -16,19 +16,16 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        dup = set()
-        ans, i, j = 0, 0, 0
-        while i < len(s) and j < len(s):
-            if s[j] not in dup:
-                dup.add(s[j])
-                j += 1
-                ans = max([ans, j - i])
-            else:
-                dup.remove(s[i])
-                i += 1
+        ans = 0
+        indice = xrange(65, 123)
+
+        i = 0
+        for index, c in enumerate(s):
+            i = max([indice[ord(c)], i])
+            ans = max([ans, index - i + 1])
+            indice[ord(c)] = index + 1
+
         return ans
-
-
 
 s = Solution()
 print s.lengthOfLongestSubstring("abcabcbb")

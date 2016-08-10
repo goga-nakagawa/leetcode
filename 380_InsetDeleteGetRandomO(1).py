@@ -40,7 +40,8 @@ class RandomizedSet(object):
         """
         Initialize your data structure here.
         """
-        self.rset = list()
+        self.vals = list()
+        self.locs = dict()
 
     def insert(self, val):
         """
@@ -48,10 +49,11 @@ class RandomizedSet(object):
         :type val: int
         :rtype: bool
         """
-        if val in self.rset:
+        if val in self.locs: # O(1)
             return False
         else:
-            self.rset.append(val)
+            self.vals.append(val)  # O(1)
+            self.locs[val] = len(self.vals) - 1  # O(1)
             return True
 
     def remove(self, val):
@@ -60,8 +62,14 @@ class RandomizedSet(object):
         :type val: int
         :rtype: bool
         """
-        if val in self.rset:
-            self.rset.remove(val)
+        if val in self.locs: # O(1)
+            lastval = self.vals[-1] # O(1)
+            if lastval != val:
+                pos = self.locs[val] # O(1)
+                self.vals[pos], self.vals[-1] = self.vals[-1], self.vals[pos] # O(1)
+                self.locs[lastval] = pos # O(1)
+            self.vals.pop(-1) # O(1)
+            self.locs.pop(val) # O(1)
             return True
         else:
             return False
@@ -71,7 +79,7 @@ class RandomizedSet(object):
         Get a random element from the set.
         :rtype: int
         """
-        return self.rset[randint(0, len(self.rset)-1)]
+        return self.vals[randint(0, len(self.vals)-1)] # O(1)
 
 
 # Your RandomizedSet object will be instantiated and called as such:
@@ -79,13 +87,13 @@ obj = RandomizedSet()
 print obj.insert(1)
 print obj.remove(2)
 print obj.insert(2)
-print obj.rset
+print obj.vals
 
 print obj.getRandom()
 print obj.remove(1)
-print obj.rset
+print obj.vals
 
-print obj.rset
+print obj.vals
 print obj.insert(2)
 print obj.getRandom()
 

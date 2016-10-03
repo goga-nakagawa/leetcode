@@ -33,23 +33,21 @@ class LRUCache(object):
         :type value: int
         :rtype: nothing
         """
-        if len(self.cache) == self.capacity:
+        if key in self.cache.keys():
+            self.cache[key] = value
+            self.least.remove(key)
+            self.least.append(key)
+        else:
+            self.least.append(key)
+            self.cache[key] = value
+
+        if len(self.cache) > self.capacity:
             lru = self.least.pop(0)
             del self.cache[lru]
-        self.least.append(key)
-        self.cache[key] = value
 
 
+lru = LRUCache(1)
+lru.set(2,1)
+print lru.cache
+print lru.get(2)
 
-
-lru = LRUCache(5)
-lru.set(1, 100)
-lru.set(2, 200)
-lru.set(3, 300)
-lru.set(4, 400)
-lru.set(5, 500)
-lru.get(1)
-lru.set(6, 600)
-
-
-print lru.cache, lru.least

@@ -4,6 +4,37 @@ Design and implement a data structure for Least Recently Used (LRU) cache. It sh
 get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
 set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
 """
+class Node:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LinkedList(object):
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def insert(self, node):
+        if self.head is None:
+            self.head = node
+        else:
+            self.tail.next = node
+            node.prev = self.tail
+        self.tail = node
+
+    def delete(self, node):
+        if node.prev:
+            node.prev.next = node.next
+        else:
+            self.head = node.next
+        if node.next:
+            node.next.prev = node.prev
+        else:
+            self.tail = node.prev
+        del node
 
 class LRUCache(object):
 
@@ -13,19 +44,19 @@ class LRUCache(object):
         """
         self.capacity = capacity
         self.cache = {}
-        self.least = []
-        
+        self.least = LinkedList()
+
 
     def get(self, key):
         """
         :rtype: int
         """
         if key in self.cache.keys():
-            self.least.remove(key)
-            self.least.append(key)
-            return self.cache.get(key)
-        else:
-            return -1
+            self.least.delete(self.cache[key])
+            self.least.insert(Node(key, self.cache.get(key).value))
+            return self.cache.get(key).value
+        return -1
+
 
     def set(self, key, value):
         """
@@ -34,16 +65,13 @@ class LRUCache(object):
         :rtype: nothing
         """
         if key in self.cache.keys():
-            self.cache[key] = value
-            self.least.remove(key)
-            self.least.append(key)
-        else:
-            self.least.append(key)
-            self.cache[key] = value
-
-        if len(self.cache) > self.capacity:
-            lru = self.least.pop(0)
-            del self.cache[lru]
+            self.least.delete(self.cache[key])
+        elif len(self.cache) == self.capacity:
+            del self.cache[self.least.head.key]
+            self.least.delete(self.least.head)
+        self.cache[key] = Node(key, value)
+        self.least.delete(self.cache[key])
+        self.least.insert(Node(key, value))
 
 
 lru = LRUCache(1)

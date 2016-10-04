@@ -12,12 +12,12 @@ class Node:
         self.next = None
 
 
-class LinkedList(object):
+class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
 
-    def insert(self, node):
+    def insert(self, node): # O(1)
         if self.head is None:
             self.head = node
         else:
@@ -25,7 +25,7 @@ class LinkedList(object):
             node.prev = self.tail
         self.tail = node
 
-    def delete(self, node):
+    def delete(self, node): # O(1)
         if node.prev:
             node.prev.next = node.next
         else:
@@ -36,6 +36,7 @@ class LinkedList(object):
             self.tail = node.prev
         del node
 
+
 class LRUCache(object):
 
     def __init__(self, capacity):
@@ -43,9 +44,8 @@ class LRUCache(object):
         :type capacity: int
         """
         self.capacity = capacity
-        self.cache = {}
+        self.cache = {} # { key: Node }
         self.least = LinkedList()
-
 
     def get(self, key):
         """
@@ -56,7 +56,6 @@ class LRUCache(object):
             self.least.insert(Node(key, self.cache.get(key).value))
             return self.cache.get(key).value
         return -1
-
 
     def set(self, key, value):
         """

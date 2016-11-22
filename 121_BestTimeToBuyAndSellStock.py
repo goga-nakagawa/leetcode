@@ -25,16 +25,16 @@ class Solution(object):
         """
         if len(prices) == 0:
             return 0
+        minimun = prices[0]
         profit = 0
-        minimum = prices[0]
-        for price in prices[1:]:
-            if price < minimum:
-                minimum = price
+        for p in prices[1:]:
+            if p < minimun:
+                minimun = p
             else:
-                if price - minimum > profit:
-                    profit = price - minimum
+                dif = p - minimun
+                if dif > profit:
+                    profit = dif
         return profit
-
 
 s = Solution()
 print s.maxProfit([7, 1, 5, 3, 6, 4])

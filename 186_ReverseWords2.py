@@ -16,17 +16,26 @@ class Solution(object):
         :type s: a list of 1 length strings (List[str])
         :rtype: nothing
         """
-        def reverse(s, start, end):
-            for i in xrange((end - start) / 2):
-                s[start + i], s[end - 1 - i] = s[end - 1 - i], s[start + i]
+        def reverse(self, string, start, end):
+            while start < end:
+                string[start], string[end] = string[end], string[start]
+                start += 1
+                end -= 1
+            return string
+        reversed_s = self.reverse(s, 0, len(s) - 1)
+        curr = 0
+        next = 1
+        while next < len(s):
+            if reversed_s[next] == " ":
+                break
+            else:
+                next += 1
+        
 
-        reverse(s, 0, len(s))
-        i = 0
-        for j in xrange(len(s) + 1):
-            if j == len(s) or s[j] == ' ':
-                reverse(s, i, j)
-                i = j + 1
 
-s = ['h','e','l','l','o', ' ', 'w', 'o', 'r', 'l', 'd']
+
+
+
+s = "the sky is blue"
 Solution().reverseWords(s)
 print s

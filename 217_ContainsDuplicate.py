@@ -8,12 +8,12 @@ class Solution(object):
         :type nums: List[int]
         :rtype: bool
         """
-        dup = set()
-        for num in nums:
-            if num in dup:
-                return True
+        dup = {}
+        for n in nums:
+            if n not in dup.keys():
+                dup[n] = True
             else:
-                dup.add(num)
+                return True
         return False
 
 s = Solution()

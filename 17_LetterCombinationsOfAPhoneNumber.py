@@ -10,26 +10,22 @@ Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 
 """
-from itertools import permutations
-
 class Solution(object):
     def letterCombinations(self, digits):
         """
         :type digits: str
         :rtype: List[str]
         """
-
-
         if not digits:
             return []
-        res = []
-        lookup = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]
-        letters = [lookup[int(d)] for d in digits]
-        print list(permutations(letters))
+        lookup, result = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"], [""]
 
+        for digit in reversed(digits):
+            choices = lookup[int(digit)]
+            m, n = len(choices), len(result)
+            result += [result[i % n] for i in xrange(n, m * n)]
+        return result
 
 
 s = Solution()
-s.letterCombinations("23")
-
-
+print s.letterCombinations("23")

@@ -1,30 +1,26 @@
-
-
-
-# recursive and memos 
-def fib(n, memo={1:1, 2:1}):
-    if n in memo.keys():
-        return memo[n]
+def comb(arr, k, selected=[]):
+    if k == 0:
+        print selected
+    elif len(arr) == k:
+        print selected + arr[:k + 1]
     else:
-        memo[n] = fib(n - 2, memo) + fib(n - 1, memo)
-        return memo[n]
+        comb(arr[1:], k - 1, selected + [arr[0]])
+        comb(arr[1:], k, selected)
 
-print fib(10)
+# comb([1,2,3,4,5], 3)
 
-def pow(n, memo={0:1}):
-    if n in memo.keys():
-        return memo[n]
+# recursive with generator
+def icomb(arr, k, selected=[]):
+    if k == 0:
+        yield selected
+    elif len(arr) == k:
+        yield selected + arr[:k + 1]
     else:
-        memo[n] = n*pow(n - 1, memo)
-        return memo[n]
+        for c in icomb(arr[1:], k - 1, selected + [arr[0]]):
+            yield c + arr[1:]
+        for c in icomb(arr[1:], k, selected):
+            yield arr[1:]
 
-print pow(6)
 
-def comb(n, k, memo):
-    if n in memo.keys():
-        return memo[n]
-    else:
-        memo[n] = comb(n, k-1, memo) * (n - k + 1) / k
-        return memo[n]
-
-print comb(6, 3, memo={(6, 0): 1, (6, 6): 1})
+for c in icomb([1,2,3,4,5], 3):
+    print c

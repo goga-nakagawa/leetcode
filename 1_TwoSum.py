@@ -1,3 +1,5 @@
+
+
 class Solution(object):
     def twoSum(self, nums, target):
         """
@@ -5,9 +7,14 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-        m = dict() # val:index
-        for i, num in enumerate(nums):
-            if (target - num) in m.keys():
-                return [m.get(target - num) + 1, i + 1]
-            m[num] = i
+        m = {}
+        for i, n in enumerate(nums):
+
+            if (target - n) not in m.keys():
+                m[n] = i
+            else:
+                return [m[target - n], i]
         return []
+
+s = Solution()
+print s.twoSum([2,7,11,15], 9)

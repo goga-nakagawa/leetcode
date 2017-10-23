@@ -10,11 +10,25 @@ return "blue is sky the".
 class Solution(object):
     def reverseWords(self, s):
         """
-        :type s: str
-        :rtype: str
+        :type s: a list of 1 length strings (List[str])
+        :rtype: nothing
         """
-        return " ".join(s.split()[::-1])
+        def reverse(start, end, s):
+            while start < end:
+                s[start], s[end] = s[end], s[start]
+                start += 1
+                end -= 1
+        reverse(0, len(s)-1, s)
+        p = 0
+        for q, c in enumerate(s):
+            if c == " ":
+                reverse(p, q, s[p:q])
+                p = q + 1
+        return s
+
+
+
+
 
 s = Solution()
 print s.reverseWords("the sky is blue")
-print s.reverseWords(" ")
